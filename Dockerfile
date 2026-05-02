@@ -1,7 +1,7 @@
 # =========================================================
 # STAGE 1: Build stage (compilation + dependencies)
 # =========================================================
-FROM ros:jazzy AS builder
+FROM docker.io/library/ros:jazzy AS builder
 
 SHELL ["/bin/bash", "-c"]
 
@@ -31,7 +31,7 @@ RUN source /opt/ros/jazzy/setup.bash && \
 # =========================================================
 # STAGE 2: Runtime stage (minimal + production hardened)
 # =========================================================
-FROM ros:jazzy AS runtime
+FROM docker.io/library/ros:jazzy AS runtime
 
 SHELL ["/bin/bash", "-c"]
 
