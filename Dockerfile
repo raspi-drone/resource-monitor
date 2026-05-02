@@ -3,6 +3,8 @@
 # =========================================================
 FROM docker.io/library/ros:jazzy AS builder
 
+SHELL ["/bin/bash", "-c"]
+
 # Build dependencies
 RUN apt-get update && apt-get install -y \
     python3-pip \
@@ -21,8 +23,8 @@ WORKDIR /workspace
 # Copy source code
 COPY src ./src
 
-# Build ROS 2 workspace (POSIX-compatible)
-RUN . /opt/ros/jazzy/setup.sh && \
+# Build ROS 2 workspace
+RUN source /opt/ros/jazzy/setup.bash && \
     colcon build --symlink-install
 
 # =========================================================
@@ -30,36 +32,41 @@ RUN . /opt/ros/jazzy/setup.sh && \
 # =========================================================
 FROM docker.io/library/ros:jazzy AS runtime
 
-# Minimal runtime dependencies only
+SHELL ["/bin/bash", "-c"]
+
+# Minimal runtime dependencies
 RUN apt-get update && apt-get install -y \
     ros-jazzy-rmw-cyclonedds-cpp \
     ros-jazzy-rmw-fastrtps-cpp \
     python3 \
     && rm -rf /var/lib/apt/lists/*
 
-# DDS configuration
 ENV RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
 
-# Create non-root user
+# Create non-root user safely (fixes GID conflict)
 ARG USERNAME=drone
 ARG USER_UID=1000
 ARG USER_GID=1000
 
-RUN groupadd --gid ${USER_GID} ${USERNAME} && \
+RUN if ! getent group ${USER_GID}; then \
+        groupadd --gid ${USER_GID} ${USERNAME}; \
+    fi && \
     useradd --uid ${USER_UID} --gid ${USER_GID} -m ${USERNAME}
 
 # Copy built workspace
 COPY --from=builder /workspace/install /opt/ros_ws/install
 
-# Fix permissions
+# Fix ROS sourcing (fixed broken path)
+RUN echo "source /opt/ros/jazzy/setup.bash" >> /home/${USERNAME}/.bashrc && \
+    echo "source /opt/ros_ws/install/setup.bash" >> /home/${USERNAME}/.bashrc
+
+# Permissions
 RUN chown -R ${USERNAME}:${USERNAME} /home/${USERNAME}
 
 USER ${USERNAME}
 WORKDIR /home/${USERNAME}
 
 # =========================================================
-# Entrypoint (ROS-ready shell)
+# Entrypoint
 # =========================================================
-ENTRYPOINT ["/bin/bash", "-c", "source /opt/ros/jazzy/setup.bash && source /opt/ros_ws/install/setup.bash && exec \"$@\"", "--"]
-
-CMD ["bash"]
+ENTRYPOINT ["/bin/bash", "-c", "source /opt/ros/jazzy/setup.bash && source /opt/ros_ws/install/setup.bash && exec bash"]
