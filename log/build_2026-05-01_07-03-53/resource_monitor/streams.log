@@ -1,0 +1,17 @@
+[0.185s] Invoking command in '/home/ws/build/resource_monitor': PYTHONPATH=/home/ws/build/resource_monitor/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ws/install/resource_monitor/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/ws/build/resource_monitor/build --no-deps symlink_data
+[0.268s] running develop
+[0.297s] running egg_info
+[0.299s] writing resource_monitor.egg-info/PKG-INFO
+[0.299s] writing dependency_links to resource_monitor.egg-info/dependency_links.txt
+[0.299s] writing entry points to resource_monitor.egg-info/entry_points.txt
+[0.299s] writing requirements to resource_monitor.egg-info/requires.txt
+[0.299s] writing top-level names to resource_monitor.egg-info/top_level.txt
+[0.305s] reading manifest file 'resource_monitor.egg-info/SOURCES.txt'
+[0.306s] writing manifest file 'resource_monitor.egg-info/SOURCES.txt'
+[0.309s] running build_ext
+[0.309s] Creating /home/ws/install/resource_monitor/lib/python3.12/site-packages/resource-monitor.egg-link (link to .)
+[0.309s] Installing resource_monitor_node script to /home/ws/install/resource_monitor/lib/resource_monitor
+[0.309s] 
+[0.309s] Installed /home/ws/build/resource_monitor
+[0.309s] running symlink_data
+[0.320s] Invoked command in '/home/ws/build/resource_monitor' returned '0': PYTHONPATH=/home/ws/build/resource_monitor/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ws/install/resource_monitor/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/ws/build/resource_monitor/build --no-deps symlink_data

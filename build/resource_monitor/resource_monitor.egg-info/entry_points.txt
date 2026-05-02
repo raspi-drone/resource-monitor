@@ -1,0 +1,2 @@
+[console_scripts]
+resource_monitor_node = resource_monitor.resource_monitor:main

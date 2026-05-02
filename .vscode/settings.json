@@ -1,0 +1,8 @@
+{
+  "python.analysis.extraPaths": [
+    "/opt/ros/jazzy/lib/python3/dist-packages"
+  ],
+  "python.autoComplete.extraPaths": [
+    "/opt/ros/jazzy/lib/python3/dist-packages"
+  ]
+}

@@ -1,0 +1,50 @@
+{
+    "name": "ROS 2 Development Container",
+    "privileged": true,
+    "remoteUser": "drone",
+
+    "build": {
+        "dockerfile": "Dockerfile",
+        "args": {
+            "USERNAME": "drone"
+        }
+    },
+
+    "workspaceFolder": "/home/ws",
+    "workspaceMount": "source=${localWorkspaceFolder},target=/home/ws,type=bind",
+
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-vscode.cpptools",
+                "ms-vscode.cpptools-themes",
+                "twxs.cmake",
+                "donjayamanne.python-extension-pack",
+                "eamodio.gitlens",
+                "ms-iot.vscode-ros"
+            ],
+            "settings": {
+                "python.analysis.extraPaths": [
+                    "/opt/ros/jazzy/lib/python3.12/site-packages",
+                    "/opt/ros/jazzy/local/lib/python3.12/dist-packages"
+                ],
+                "python.analysis.useLibraryCodeForTypes": true,
+                "python.analysis.autoSearchPaths": true
+            }
+        }
+    },
+
+    "containerEnv": {
+        "ROS_DOMAIN_ID": "42",
+        "RMW_IMPLEMENTATION": "rmw_cyclonedds_cpp",
+
+        // safer for macOS Podman than hardcoding unix:0
+        "DISPLAY": "${localEnv:DISPLAY}"
+    },
+
+    "runArgs": [
+        "--ipc=host"
+    ],
+
+    "postCreateCommand": "bash -c 'source /opt/ros/jazzy/setup.bash && sudo rosdep fix-permissions && rosdep update && echo source /opt/ros/jazzy/setup.bash >> ~/.bashrc && echo source /opt/ros/jazzy/setup.bash >> ~/.profile'"
+}
