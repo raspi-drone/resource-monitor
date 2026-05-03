@@ -43,7 +43,8 @@
     },
 
     "runArgs": [
-        "--ipc=host"
+        "--ipc=host",
+        "--network=host"
     ],
 
     "postCreateCommand": "bash -c 'source /opt/ros/jazzy/setup.bash && sudo rosdep fix-permissions && rosdep update && echo source /opt/ros/jazzy/setup.bash >> ~/.bashrc && echo source /opt/ros/jazzy/setup.bash >> ~/.profile'"
