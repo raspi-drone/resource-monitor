@@ -16,7 +16,7 @@ RUN groupadd --gid $USER_GID $USERNAME \
     && chmod 0440 /etc/sudoers.d/$USERNAME
 
 # =========================================================
-# ROS 2 + DDS dependencies (THIS FIXES YOUR ERROR)
+# ROS 2 + DDS dependencies
 # =========================================================
 RUN apt-get update && apt-get install -y \
     python3-pip \
@@ -26,7 +26,6 @@ RUN apt-get update && apt-get install -y \
 
 ENV SHELL=/bin/bash
 
-# Optional: default DDS implementation (safe for your setup)
 ENV RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
 
 # Switch to non-root user
