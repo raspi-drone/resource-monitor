@@ -24,7 +24,7 @@ setup(
     },
     entry_points={
         'console_scripts': [
-            'resource_monitor_node = resource_monitor.resource_monitor:main',
+            'rpi_monitor_node = resource_monitor.rpi_monitor.rpi_monitor_node:main',
         ],
     },
 )

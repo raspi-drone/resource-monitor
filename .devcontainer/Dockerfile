@@ -1,4 +1,4 @@
-FROM ros:jazzy
+FROM docker.io/library/ros:jazzy
 
 ARG USERNAME=drone
 ARG USER_UID=1000
@@ -22,6 +22,7 @@ RUN apt-get update && apt-get install -y \
     python3-pip \
     ros-jazzy-rmw-cyclonedds-cpp \
     ros-jazzy-rmw-fastrtps-cpp \
+    libraspberrypi-bin \
     && rm -rf /var/lib/apt/lists/*
 
 ENV SHELL=/bin/bash
