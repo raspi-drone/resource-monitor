@@ -2,7 +2,7 @@ from collections import deque
 from typing import Optional
 
 from rclpy.node import Node
-from diagnostic_msgs.msg import DiagnosticArray, DiagnosticStatus, KeyValue
+from diagnostic_msgs.msg import DiagnosticStatus, KeyValue
 from dataclasses import dataclass
 import numpy as np
 
@@ -59,7 +59,7 @@ class StatusBuilder:
                 status.message = self.diagnostic_parameter.error_message
                 
 
-        self.node.get_logger().info(
+        self.node.get_logger().debug(
             f"{self.diagnostic_parameter.status_name} {data:.2f}" if data else f"{self.diagnostic_parameter.status_name}: unavailable"
         )
         

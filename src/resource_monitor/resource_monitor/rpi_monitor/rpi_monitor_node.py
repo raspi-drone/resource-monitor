@@ -3,7 +3,7 @@ import platform
 from rclpy.node import Node
 from diagnostic_msgs.msg import DiagnosticArray, DiagnosticStatus, KeyValue
 from resource_monitor.rpi_monitor.rpi_monitor import RpiMonitor, RpiMetric
-from resource_monitor.resource_monitor.status_builder import StatusBuilder, StatusParameter
+from resource_monitor.status_builder import StatusBuilder, StatusParameter
 import platform
 
 class RpiMonitorNode(Node):
@@ -59,8 +59,50 @@ class RpiMonitorNode(Node):
             error_threshold=90,
             error_message="Disk space critical"
         ))
+        
+        self.disk_write_status = StatusBuilder(self, StatusParameter(
+            status_name="disk_write",
+            hardware_id=self.hardware_id,
+            normal_message="Disk write normal",
+            warning_threshold=20,
+            warning_message="Disk write high",
+            error_threshold=30,
+            error_message="Disk write critical"
+        ))
+        
+        self.disk_read_status = StatusBuilder(self, StatusParameter(
+            status_name="disk_read",
+            hardware_id=self.hardware_id,
+            normal_message="Disk read normal",
+            warning_threshold=50,
+            warning_message="Disk read high",
+            error_threshold=60,
+            error_message="Disk read critical"
+        ))
+        
+        self.network_uplodad_status = StatusBuilder(self, StatusParameter(
+            status_name="network_uplodad",
+            hardware_id=self.hardware_id,
+            normal_message="Network upload normal",
+            warning_threshold=10,
+            warning_message="Network upload high",
+            error_threshold=15,
+            error_message="Network upload critical"
+        ))
+        
+        self.network_download_status = StatusBuilder(self, StatusParameter(
+            status_name="network_download",
+            hardware_id=self.hardware_id,
+            normal_message="Network download normal",
+            warning_threshold=10,
+            warning_message="Network download high",
+            error_threshold=15,
+            error_message="Network download critical"
+        ))
 
         self.timer = self.create_timer(1.0, self.timer_callback)
+        
+        self._logger.info("Start Raspberry Pi Monitor Node")
 
 
     def timer_callback(self):
@@ -73,6 +115,10 @@ class RpiMonitorNode(Node):
         msg.status.append(self.cpu_usage_status.build_status(data.cpu_usage))
         msg.status.append(self.ram_usage_status.build_status(data.ram_usage_percent))
         msg.status.append(self.disk_space_status.build_status(data.disk_usage_percent))
+        msg.status.append(self.disk_read_status.build_status(data.disk_read))
+        msg.status.append(self.disk_write_status.build_status(data.disk_write))
+        msg.status.append(self.network_uplodad_status.build_status(data.network_upload))
+        msg.status.append(self.network_download_status.build_status(data.network_download))
         
         self.publisher_.publish(msg)
         
