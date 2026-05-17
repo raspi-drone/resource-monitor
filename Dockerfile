@@ -24,6 +24,7 @@ RUN apt-get update && apt-get install -y \
     python3-colcon-common-extensions \
     ros-jazzy-rmw-cyclonedds-cpp \
     ros-jazzy-rmw-fastrtps-cpp \
+    libraspberrypi-bin \
     build-essential \
     git \
     && rm -rf /var/lib/apt/lists/*
@@ -36,10 +37,13 @@ WORKDIR /workspace
 
 COPY src ./src
 
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
 RUN . /opt/ros/jazzy/setup.sh && \
 colcon build --symlink-install
 
 # Switch to non-root user
 USER $USERNAME
 
-CMD ["/bin/sh", "-c", ". /opt/ros/jazzy/setup.sh && . /workspace/install/setup.sh && ros2 run resource_monitor resource_monitor_node"]
+CMD ["/entrypoint.sh"]
